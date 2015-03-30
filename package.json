@@ -1,0 +1,23 @@
+{
+  "name": "amazon-iap",
+  "version": "0.1.0",
+  "description": "Validates Amazon app store purchases (iap) using the amazon receipt verification service (rvs) to find out about current subscription details.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "amazon",
+    "amazon rvs",
+    "amazon iap"
+    "purchase",
+    "receipt"
+  ],
+  "repository" :
+  {
+    "type" : "git",
+    "url" : "https://github.com/maurermax/amazon-iap"
+  },
+  "author": "Max Maurer <maxemanuel.maurer@gmail.com>",
+  "license": "MIT",
+}
