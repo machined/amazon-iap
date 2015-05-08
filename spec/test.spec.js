@@ -14,6 +14,7 @@ describe('verifier', function() {
     verifier.verify(testData, function(err, result) {
       expect(err).to.not.be.ok;
       expect(result).to.be.ok;
+      done();
     });
   });
 });
