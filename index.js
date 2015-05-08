@@ -29,7 +29,7 @@ Verifier.prototype.verify = function(receipt, cb) {
       return cb(new Error('Amazon RVS Error: Unknown other error'));
     }
     if (_.every(['productId', 'productType', 'purchaseDate'], Object.prototype.hasOwnProperty, body)) {
-      cb(null, obj);
+      cb(null, body);
     } else {
       cb(new Error("body did not contain expected json object"));
     }
