@@ -21,7 +21,7 @@ Verifier.prototype.verify = function (receipt, cb) {
   request({
     url: finalUrl,
     json: true
-  }, function(err, res, body) {
+  }, function (err, res, body) {
     if (err) {
       return cb(err);
     }
