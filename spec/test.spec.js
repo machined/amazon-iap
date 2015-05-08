@@ -12,8 +12,8 @@ describe('verifier', function() {
   it('successfully verifies a correct subscription receipt', function(done) {
     var verifier = new Verifier({sharedKey: sharedKey});
     verifier.verify(testData, function(err, result) {
-      expect(err).to.not.be.ok();
-      expect(result).to.be.ok();
+      expect(err).to.not.be.ok;
+      expect(result).to.be.ok;
     });
   });
 });
