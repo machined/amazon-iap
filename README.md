@@ -1,54 +1,44 @@
-# google-play-purchase-validator #
+# Amazon IAP Verifier
 
+Verifies the given receipt data agains the Amazon IAP Server.
 
+### Usage
 
-### How to use? ###
-
-````
-var Verifier = require('google-play-purchase-validator');
-var options = {
-  email: 'gmailservice@accountemail',
-  key: '-----BEGIN PRIVATE KEY-----your private key-----END PRIVATE KEY-----',
-  keyFile: 'alternatively path to key file'
-};
-var verifier = new Verifier(options);
-var receipt = {
-  packageName: "de.example.com",
-  productId: "subscription",
-  purchaseToken: "PURCHASE_TOKEN_RECEIVED_BY_THE_USERS_DEVICE_AFTER_PURCHASE"
-};
-verifier.verify(receipt, function cb(err, response) {
-  if (err) {
-    console.log("there was an error validating the receipt");
-    console.log(err);
-  }
-  console.log("sucessfully validated the receipt");
-  /* response looks like this
-  {
-  "kind": "androidpublisher#subscriptionPurchase",
-  "startTimeMillis": "long",
-  "expiryTimeMillis": "long",
-  "autoRenewing": boolean
-  }*/
-  console.log(response);
+```javascript
+var verifier = new Verifier({sharedKey: sharedKey, production: true});
+verifier.verify({userId: "foo", receiptId: "bar"}, function(err, result) {
+  if (err) ...
+  else console.log(result);
 });
-````
+```
 
-### How to get the credentials I need? ###
-We do JWT singning for our requests send to Google. To be able to query this successfully please follow the following steps.
+### Testing
 
-1. Start off by going into the google play developer console as the main Administrator of the account (this role is the only one who is allowed to perform the following steps).
-1. Go to "Settings->API Access" to link a Google Developer project to this account.
-1. If you are new here choose "create new project".
-1. You will now have more options. Choose "Create Service Account".
-1. Follow the link to the Google Developer Console and your project
-1. Click "Create new client id" to create a new client ID
-1. Ignore the .p12 file that will be downloaded to your machine and instead click "generate new JSON key".
-1. This will download a JSON file to your machine. We will get back to that file in a second.
-1. Now go back to the play store publisher account and click "done". Your new generate user will appear here.
-1. Click "grant access" and grant the user rights to read your project.
-1. Now setup your Node.JS project with this module and provide the email-address and the private key found in the json file as options to this module.
+There's a sandbox app provided by Amazon that you can use for the local testing and development. Since the sandbox app is written in Java you need to have a JRE set up locally before you start.
 
-### I don't understand a thing. ###
+1. Download [Tomcat](http://tomcat.apache.org/) and [Amazon Mobile App SDK](https://developer.amazon.com/public/resources/development-tools/sdk)
 
-Don't hesitate to contact me if this is all to brief for you. I admit I was in a hurry writing this.
+    ```
+    wget http://mirror.hosting90.cz/apache/tomcat/tomcat-8/v8.0.22/bin/apache-tomcat-8.0.22.tar.gz
+    wget https://amznadsi-a.akamaihd.net/public/mobileSdkDistribution/Apps-SDK.zip
+    tar -xf apache-tomcat-8.0.22.tar.gz
+    unzip -d sdk Apps-SDK.zip
+    ```
+    
+2. Deploy the sandbox app to the Tomcat server 
+
+    ```
+    cp sdk/Android/InAppPurchasing/2.0/tools/RVSSandbox.war apache-tomcat-8.0.22/webapps
+    ```
+
+3. Run Tomcat and verify that the sandbox app is up and running
+   
+    ```
+    ./apache-tomcat-8.0.22/bin/startup.sh
+    curl -I http://localhost:8080/RVSSandbox/
+    ```
+  
+
+### License
+
+MIT

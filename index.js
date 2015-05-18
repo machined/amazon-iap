@@ -3,17 +3,25 @@ var _ = require('lodash');
 var util = require('util');
 
 module.exports = Verifier;
+
+var hosts = {
+  sandbox: "http://localhost:8080/RVSSandbox/version/1.0/verifyReceiptId/developer/%s/user/%s/receiptId/%s",
+  production: "https://appstore-sdk.amazon.com/version/1.0/verifyReceiptId/developer/%s/user/%s/receiptId/%s"
+};
+
 function Verifier(options) {
   this.options = options || {};
+  this.host = this.options.production ? hosts.production : hosts.sandbox;
 }
 
-Verifier.prototype.verify = function(receipt, cb) {
-  var urlPattern = "https://appstore-sdk.amazon.com/version/1.0/verifyReceiptId/developer/%s/user/%s/receiptId/%s";
-  var finalUrl = util.format(urlPattern, encodeURIComponent(this.options.sharedKey), encodeURIComponent(receipt.userId), encodeURIComponent(receipt.receiptId));
+Verifier.prototype.verify = function (receipt, cb) {
+  var finalUrl = util.format(this.host, encodeURIComponent(this.options.sharedKey),
+      encodeURIComponent(receipt.userId), encodeURIComponent(receipt.receiptId));
+
   request({
     url: finalUrl,
     json: true
-  }, function(err, res, body) {
+  }, function (err, res, body) {
     if (err) {
       return cb(err);
     }
@@ -29,7 +37,7 @@ Verifier.prototype.verify = function(receipt, cb) {
       return cb(new Error('Amazon RVS Error: Unknown other error'));
     }
     if (_.every(['productId', 'productType', 'purchaseDate'], Object.prototype.hasOwnProperty, body)) {
-      cb(null, obj);
+      cb(null, body);
     } else {
       cb(new Error("body did not contain expected json object"));
     }
