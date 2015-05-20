@@ -11,7 +11,9 @@ var hosts = {
 
 function Verifier(options) {
   this.options = options || {};
-  this.host = this.options.production ? hosts.production : hosts.sandbox;
+  this.host = this.options.production
+    ? (!_.isUndefined(process.env.AMAZON_PRODUCTION_URL) ? process.env.AMAZON_PRODUCTION_URL : hosts.production)
+    : (!_.isUndefined(process.env.AMAZON_SANDBOX_URL) ? process.env.AMAZON_SANDBOX_URL : hosts.sandbox);
 }
 
 Verifier.prototype.verify = function (receipt, cb) {

@@ -37,7 +37,9 @@ There's a sandbox app provided by Amazon that you can use for the local testing 
     ./apache-tomcat-8.0.22/bin/startup.sh
     curl -I http://localhost:8080/RVSSandbox/
     ```
-  
+4. (Optionally) set the sandbox URL via environment variable instead of using the default URL: http://localhost:8080/RVSSandbox/version/1.0/verifyReceiptId/developer/%s/user/%s/receiptId/%s
+
+    AMAZON_SANDBOX_URL=[YourCustomSandboxURL]
 
 ### License
 
